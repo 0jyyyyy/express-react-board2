@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -33,12 +35,18 @@ router.post("/",async (req, res) => {
       });
     }
 
+    const hashedPassword = bcrypt.hashSync(password,10);
+
     const user = await client.user.create({
       data:{
         account,
-        password,
+        password: hashedPassword,
       }
     });
+
+    const token = jwt.sign({account},process.env.JWT_SECRET!);
+    return res.json({token});
+    
   }catch(error){
     console.error(error);
 
