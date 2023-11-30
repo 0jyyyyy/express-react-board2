@@ -3,6 +3,7 @@ import cors from "cors";
 
 import userRouter from "./Routes/user";
 import authRouter from "./Routes/auth";
+import postRouter from "./Routes/post";
 
 const app:Express = express();
 const port: number = +process.env.PORT! || 3010;
@@ -18,6 +19,7 @@ app.use(
 
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
+app.use("/post", postRouter);
 app.get("/", (req, res) => {
   res.send("Hello, ExpressTS!");
 });
