@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import Header from "../components/Header";
+import PostCard from "../components/PostCard";
 
 export interface IPost {
   content: string;
@@ -68,7 +69,11 @@ const Main:FC =() => {
         <span className="w-2/12 p-2 text-center">USER</span>
         <span className="w-2/12 p-2 text-center">DATE</span>
       </li>
-      <li>포스트 카드</li>
+      <li>
+        {posts.map((v, i) => (
+          <PostCard key={i} index={i} post={v} />
+        ))}
+      </li>
     </ul>
     <ul className="flex text-lg justify-center">
       <li>페이지</li>
