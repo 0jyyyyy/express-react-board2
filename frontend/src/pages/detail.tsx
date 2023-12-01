@@ -2,8 +2,8 @@ import { FC, useEffect } from "react";
 import { useMe } from "../hooks";
 import { useSearchParams } from "react-router-dom";
 import Header from "../components/Header";
-import { formatDistanceToNow } from "date-fns";
-import { ko } from "date-fns/locale";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import ko from "date-fns/locale/ko";
 
 const Detail: FC = () => {
   const {account, getMe} = useMe();
@@ -23,11 +23,11 @@ const Detail: FC = () => {
       <Header account={account}/>
       <main className="max-w-screen-md mx-auto py-24">
         <div className="border-b-2">
-          <h1 className="text-center font-bold py-8 text-2xl">{ title }</h1>
+          <h1 className="text-center font-bold py-8 text-2xl">{title}</h1>
           <div className="text-right pb-2 text-sm px-20"> 
-            <span>{ userAccount },</span>
+            <span>{userAccount},</span>
             <span>
-              { formatDistanceToNow(new Date(createdAt!), {
+              {formatDistanceToNow(new Date(createdAt!), {
                 locale: ko,
                 addSuffix: true,
               })}
