@@ -5,6 +5,12 @@ interface HeaderProps{
   account: string;
 }
 const Header:FC<HeaderProps> = ({account}) => {
+  const onClickSignOut = () => {
+    localStorage.removeItem("token");
+
+    window.location.reload();
+  };
+
   return(
     <header className="max-w-screen=md mx-auto flex justify-between items-center p-4">
       {account ? (
@@ -12,7 +18,8 @@ const Header:FC<HeaderProps> = ({account}) => {
         <span className="font-semibold">ojy0533</span>'s Welcome
         <Link to="/create" className="button-style">
           Create  
-        </Link> 
+        </Link>
+        <button className="button-style" onClick={onClickSignOut}>Sign Out</button> 
       </div>
       ) : (
         <div>
