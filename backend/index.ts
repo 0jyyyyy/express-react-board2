@@ -1,12 +1,12 @@
 import express, {Express} from "express";
 import cors from "cors";
 
-import userRouter from "./Routes/user";
-import authRouter from "./Routes/auth";
-import postRouter from "./Routes/post";
+import userRouter from "./routes/user";
+import authRouter from "./routes/auth";
+import postRouter from "./routes/post";
 
 const app:Express = express();
-const port: number = +process.env.PORT! || 3010;
+const port:number = +process.env.PORT! || 3010;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
@@ -17,10 +17,10 @@ app.use(
   })
 );
 
-app.use("/user", userRouter);
-app.use("/auth", authRouter);
-app.use("/post", postRouter);
-app.get("/", (req, res) => {
+app.use('/user', userRouter);
+app.use('/auth', authRouter);
+app.use('/post', postRouter);
+app.get('/', (req, res) => {
   res.send("Hello, ExpressTS!");
 });
 
