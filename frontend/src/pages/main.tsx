@@ -1,7 +1,9 @@
 import axios from "axios";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
+import Header from "../components/Header";
 
 const Main:FC =() => {
+  const[account, setAccount] = useState<string>("");
   const getMe = async () =>{
     const token = localStorage.getItem("token");
     if(!token) return;
@@ -15,6 +17,7 @@ const Main:FC =() => {
           },
         }
       );
+      setAccount(response.data.account);
       console.log(response);
     }catch(error){
       console.error(error);
@@ -24,9 +27,8 @@ const Main:FC =() => {
   useEffect(() => {
     getMe();
   },[]);
-
   return <>
-  <header>헤더</header>
+  <Header account = {account}/>
   <main className="max-w-screen-md mx-auto">
     <h1 className="mt-20 text-center font-bold text-2xl">ojy0533's Board</h1>
     <ul className="mt-10 h-[440px]">
