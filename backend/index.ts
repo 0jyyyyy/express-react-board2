@@ -17,10 +17,10 @@ app.use(
   })
 );
 
-app.use('/user', userRouter);
-app.use('/auth', authRouter);
-app.use('/post', postRouter);
-app.get('/', (req, res) => {
+app.use("/user", userRouter);
+app.use("/auth", authRouter);
+app.use("/post", postRouter);
+app.get("/", (req, res) => {
   res.send("Hello, ExpressTS!");
 });
 
