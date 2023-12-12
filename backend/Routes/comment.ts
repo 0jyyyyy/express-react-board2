@@ -71,5 +71,46 @@ router.post('/', verifyToken, async(req:any, res) => {
     });
   }
 });
+//댓글 읽기?
+router.get('/', async(req, res) => { // verifyToken은 필수 x 
+  try{
+    const { postId } = req.query;
+    if(
+      !postId ||
+      isNaN(+postId)
+    ){
+      return res.status(400).json({
+        message: "Post Id is not a Number",
+      });
+    }
+     // db 상에 postId가 존재하는지를 먼저 체크한다.
+     const post = await client.post.findUnique({
+      where : { 
+        id: +postId,
+      },
+    });
+
+    if(!post) { 
+      return res.status(400).json({
+        message: "Not Exist Post",
+      });
+    }
+    
+    const comments = await client.comment.findMany({
+      where : { // postId로 comment를 조회하는것
+        postId : +postId,
+      },
+    });
+
+    return res.json(comments);
+  }catch(error){
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Server Error",
+    });
+  }
+
+});
 
 export default router;
