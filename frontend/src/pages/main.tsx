@@ -84,7 +84,7 @@ const Main:FC =() => {
         ))}
     </ul>
     <ul className="flex text-lg justify-center mt-2 gap-2">
-      {totalPage && pageComp()}
+      {totalPage !== 0  && pageComp()}
     </ul>
   </main>
   </>
