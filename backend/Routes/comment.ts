@@ -32,7 +32,7 @@ router.post('/', verifyToken, async(req:any, res) => {
         message : "Not Exist Data",
       });
     }
-    if(
+    if( // postid가 존재하지않거나 postId가 숫자가 아닐경우
       !postId ||
       isNaN(+postId)
     ){
@@ -95,7 +95,7 @@ router.get('/', async(req, res) => { // verifyToken은 필수 x
         message: "Not Exist Post",
       });
     }
-    
+
     const comments = await client.comment.findMany({
       where : { // postId로 comment를 조회하는것
         postId : +postId,
