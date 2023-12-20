@@ -16,6 +16,7 @@ const select = {
       account:true,
     },
   },
+  postId: true,
 };
 
 //댓글 생성
@@ -99,6 +100,10 @@ router.get('/', async(req, res) => { // verifyToken은 필수 x
     const comments = await client.comment.findMany({
       where : { // postId로 comment를 조회하는것
         postId : +postId,
+      },
+      select,
+      orderBy: {
+        createdAt:"desc", //최신순으로
       },
     });
 

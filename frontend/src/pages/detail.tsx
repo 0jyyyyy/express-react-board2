@@ -2,8 +2,8 @@ import { FC, useEffect } from "react";
 import { useMe } from "../hooks";
 import { useSearchParams, useParams } from "react-router-dom";
 import Header from "../components/Header";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import ko from "date-fns/locale/ko";
+import { formatDistanceToNow } from "date-fns";
+import { ko } from "date-fns/locale";
 import Comment from "../components/Comment";
 
 const Detail: FC = () => {
@@ -39,9 +39,7 @@ const Detail: FC = () => {
         </div>
         <div className="px-20 pt-12 min-h-[360px]">{ content }</div>
         </div>
-        <div>
-         <Comment postId={+postId!} />
-        </div>      
+         <Comment postId={+postId!} />     
       </main>
     </>
   ); 
