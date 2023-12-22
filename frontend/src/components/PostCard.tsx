@@ -11,7 +11,7 @@ interface PostCardProps {
 
 const PostCard:FC<PostCardProps> = ({index, post}) => {
   return(
-    <Link to={`/${post.id}?title=${post.title}&user-account=${post.user.account}&created-at=${post.createdAt}&content=${post.content}`}>
+    <Link to={`/${post.id}`}>
       <li
         className={`flex justify-between ${
           index % 2 ? "bg-gray-300" : "bg-white"

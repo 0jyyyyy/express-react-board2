@@ -85,6 +85,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+
 //전체 글 갯수
 router.get("/count", async(req,res) => {
   try{
@@ -99,4 +100,42 @@ router.get("/count", async(req,res) => {
     });
   }
 });
+
+//글 한개 조회
+router.get("/:postId", async(req,res) =>{
+  try{
+    const { postId } = req.params;
+
+    if(!postId || isNaN(+postId)){
+      return res.status(400).json({
+        message: "Not Exist postId",
+      });
+    }
+
+    const post = await client.post.findUnique({
+      where : {
+        id: +postId,
+      },
+      select,
+    });
+
+    if(!post){
+      return res.status(400).json({
+        message: "Not Exist postId",
+      });
+    }
+    
+    return res.json(post);
+  }catch(error){
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Server Error",
+    });
+  }
+});
+
+//글 수정
+
+//글 삭제
 export default router;
