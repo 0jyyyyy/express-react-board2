@@ -136,6 +136,70 @@ router.get("/:postId", async(req,res) =>{
 });
 
 //글 수정
+router.put("/:postId", verifyToken, async(req: any ,res) =>{
+  try{
+    const { postId } = req.params;
+    const { title, content } = req.body;
+    const { user } = req;
 
+    if(!postId || isNaN(+postId)){
+      return res.status(400).json({
+        message: "Not Exist postId",
+      });
+    }
+
+    if(
+      (!title || title.trim().length === 0) &&
+      (!content || content.trim().length === 0)
+      
+    ) {
+      return res.status(400).json({
+        message: "Not Exist Data",
+      });
+    }
+
+    const existPost = await client.post.findUnique({
+      where : {
+        id : +postId,
+      },
+    });
+
+    if(!existPost || existPost.userId !== user.id) {
+      return res.status(400).json({
+        message : "Not exist post",
+      });
+    }
+
+    const updatedPost = await client.post.update({
+      where : {
+        id : +postId,
+      },
+      data : {
+        title : title ? title : existPost.title,
+        content : content ? content : existPost.content,
+      },
+      select,
+    });
+    return res.json(updatedPost);
+  }catch(error){
+    console.error(error);
+
+    return res.status(500).json({
+      message : "Server Error",
+    })
+  }
+});
 //글 삭제
+router.delete("/:postId", verifyToken, async(req:any, res)=>{
+  try{
+    const
+  }catch(error){
+    console.error(error);
+
+    return res.status(500).json({
+      message : "Server Error",
+    })
+  }
+});
+
 export default router;
