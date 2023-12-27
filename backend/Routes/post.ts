@@ -192,7 +192,40 @@ router.put("/:postId", verifyToken, async(req: any ,res) =>{
 //글 삭제
 router.delete("/:postId", verifyToken, async(req:any, res)=>{
   try{
-    const
+    const { postId } = req.params;
+    const { user } = req;
+
+    if(!postId || isNaN(+postId)){
+      return res.status(400).json({
+        message: "Not Exist postId",
+      });
+    }
+
+    const existPost = await client.post.findUnique({
+      where : {
+        id : +postId,
+      },
+    });
+
+    if(!existPost || existPost.userId !== user.id) {
+      return res.status(400).json({
+        message : "Not exist post",
+      });
+    }
+
+    await client.comment.deleteMany({
+      where : {
+        postId : existPost.id,
+      },
+    });
+
+    const deletePost = await client.post.delete({
+      where : {
+        id : +postId,
+      },
+    });
+
+    return res.json(deletePost.id);
   }catch(error){
     console.error(error);
 
