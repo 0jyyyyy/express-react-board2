@@ -15,7 +15,7 @@ const Header:FC<HeaderProps> = ({account}) => {
     <header className="max-w-screen=md mx-auto flex justify-between items-center p-4">
       {account ? (
         <div>
-        <span className="font-semibold">ojy0533</span>'s Welcome
+        <span className="font-semibold">{account}</span>'s Welcome
         <Link to="/create" className="button-style">
           Create  
         </Link>
