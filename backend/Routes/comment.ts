@@ -166,5 +166,43 @@ router.put("/:commentId", verifyToken, async(req:any, res) =>{
       });
     }
 });
+//댓글 삭제
+router.delete("/:commentId",verifyToken, async(req:any, res) => {
+  try{
+    const { commentId } = req.params;
+    const { user } = req;
 
+    if(!commentId || isNaN(+commentId)){
+      return res.status(400).json({
+        message: "Not Exist CommentId",
+      });
+    }
+
+    const existComment = await client.comment.findUnique({
+      where : {
+        id : +commentId,
+      },
+    });
+
+    if(!existComment || existComment.userId !== user.id){
+      return res.status(400).json({
+        message : "Not Exist Comment",
+      });
+    }
+    const deleteComment = await client.comment.delete({
+      where : {
+        id: +commentId,
+      },
+    });
+    return res.json({
+      id: +deleteComment.id, // 삭제된 모든 내용보다는 몇번이 삭제된거지만 확인용으로
+    });
+  }catch(error){
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Server Error",
+    })
+  }
+});
 export default router;
