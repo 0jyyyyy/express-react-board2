@@ -7,8 +7,8 @@ import { ko } from "date-fns/locale";
 import Comment from "../components/Comment";
 import axios from "axios";
 import { IPost } from "./main";
-import { FiArrowLeft, FiX , FiTrash2 } from "react-icons/fi";
-import { GrEdit } from "react-icons/gr";
+import { FiArrowLeft, FiX , FiTrash2 } from "react-icons/fi/index";
+import { GrEdit } from "react-icons/gr/index";
 
 const Detail: FC = () => {
   const[post, setPost] = useState<IPost>();
