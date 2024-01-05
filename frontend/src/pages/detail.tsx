@@ -107,11 +107,11 @@ const Detail: FC = () => {
             {account === post.user.account && (
               <>  
                 <button
-                  className="flex items-center"
+                  className="flex items-center mr-3"
                   onClick={()=> setEditToggle(!editToggle)}
                 >
                   {editToggle ? (
-                    "Cancel"
+                    <><FiX size={20} />Cancel </>
                   ) : (
                     <>
                       <GrEdit size={22}/>Edit
@@ -119,7 +119,7 @@ const Detail: FC = () => {
                   )}
                 </button>
                 <button
-                  className="flex items-center"
+                  className="flex items-center mr-3"
                   onClick={() =>setIsOpen(true)}
                 >
                   <FiTrash2 size={22}/>Delete   
@@ -175,7 +175,7 @@ const Detail: FC = () => {
                 <FiX/>
               </button>
             </div>
-            <h1 className="mt-8">정말 삭제하시겠습니까?</h1>
+            <h1 className="mt-8">게시글을 삭제하시겠습니까?</h1>
             <div className="mt-8 text-center mt-4 flex justify-center">
               <button className="flex items-center justify-center" onClick={onClickDelete}>
                 <FiTrash2 size={22}/> Delete  

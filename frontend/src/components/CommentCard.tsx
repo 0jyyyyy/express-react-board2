@@ -1,22 +1,26 @@
-import { FC, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { IComment } from "./Comment";
 import { formatDistanceToNow } from "date-fns";
 import { ko }  from "date-fns/locale";
 import { useMe } from "../hooks";
 import { GrEdit } from "react-icons/gr";
-import { FiX } from "react-icons/fi";
+import { FiTrash2, FiX } from "react-icons/fi";
 import axios from "axios";
 
 
 interface CommentCardProps {
   comment: IComment;
+  comments : IComment[];
+  setComments : Dispatch<SetStateAction<IComment[]>>;
 }
 
-const CommentCard:FC<CommentCardProps> =({ comment }) => {
+const CommentCard:FC<CommentCardProps> =({ comment, comments, setComments }) => {
   const{ account, getMe } = useMe();
   const[ isEdit, setIsEdit ] = useState<boolean>(false);
   const[updateComment, setUpdateComment] = useState<string>(comment.content);
   const[ content, setContent] = useState<string>(comment.content);
+
+  const[ isOpen, setIsOpen] = useState<boolean>(false);
 
   const onClickEdit = async () => {
     try{
@@ -41,12 +45,39 @@ const CommentCard:FC<CommentCardProps> =({ comment }) => {
       console.error(error);
     }
   };
+
+  const onClickDelete = async () => {
+    try{
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BACK_URL}/comment/${comment.id}`,
+        {
+          headers:{
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const temp = comments.filter((v, i) => v.id !== response.data);
+     setComments(temp);
+     setIsOpen(false);
+     window.location.reload();
+    }catch(error){
+      console.error(error);
+    }
+  }
   useEffect(() =>{
     getMe();
   },[]);
 
+  useEffect(() => {
+    setContent(comment.content);
+    setUpdateComment(comment.content);
+  },[comment]);
+
   
   return(
+    <>
     <li className="flex mb-2">
         <span className="w-20 text-right">{comment.user.account}</span> 
         <span className="grow pl-2">{isEdit ? (
@@ -76,7 +107,13 @@ const CommentCard:FC<CommentCardProps> =({ comment }) => {
           >
             {isEdit ? <><FiX size={20} />Cancel </>: <><GrEdit size={20}/>Edit</>}
           </button>
-          삭제 가능
+          <button 
+            className="flex items-center mr-3"
+            onClick={() => setIsOpen(true)}
+          >
+            <FiTrash2 size={20}/> Delete
+          </button>
+          
         </span>)}
         <span className="w-32 pl-2">
         {formatDistanceToNow(new Date(comment.createdAt),{
@@ -85,7 +122,25 @@ const CommentCard:FC<CommentCardProps> =({ comment }) => {
         })}
         </span>
     </li>
-  )
+    {isOpen && ( 
+        <div className="fixed w-full h-full bg white top-0 left-0 bg-opacity-50 flex justify-center items-center">
+          <div className="text-xl p-8">
+            <div className="text-right">
+              <button onClick={() => setIsOpen(false)}>
+                <FiX/>
+              </button>
+            </div>
+            <h1 className="mt-8">댓글을 삭제하시겠습니까?</h1>
+            <div className="mt-8 text-center mt-4 flex justify-center">
+              <button className="flex items-center justify-center" onClick={onClickDelete}>
+                <FiTrash2 size={22}/> Delete  
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>  
+  );
 };
 
 export default CommentCard;
